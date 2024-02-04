@@ -1,0 +1,146 @@
+import 'package:iSikhi/CounterList.dart';
+import 'package:iSikhi/ListView.dart';
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
+import 'package:path/path.dart';
+
+class CounterPage extends StatefulWidget {
+  final int rhymeId;
+  final Database database;
+
+  CounterPage({required this.rhymeId, required this.database});
+
+  @override
+  _CounterPageState createState() => _CounterPageState();
+}
+
+class _CounterPageState extends State<CounterPage> {
+  int count = 0;
+  @override
+  void initState() {
+    super.initState();
+    loadCounterFromDatabase();
+  }
+
+  Future<void> fetchRhymeDetails() async {
+    final List<Map<String, dynamic>> rhymeDetails = await widget.database.query(
+      'rhymes',
+      where: 'id = ?',
+      whereArgs: [widget.rhymeId],
+    );
+
+    setState(() {
+      count = rhymeDetails[0]['count'];
+    });
+  }
+
+  Future<void> updateCount(int newCount) async {
+    await widget.database.rawUpdate(
+      'UPDATE rhymes SET count = ? WHERE id = ?',
+      [newCount, widget.rhymeId],
+    );
+    fetchRhymeDetails();
+  }
+
+  Future<void> _incrementCounter() async {
+    await updateCount(count + 1);
+  }
+
+  Future<void> _decrementCounter() async {
+    await updateCount(count - 1);
+  }
+
+  Future<void> _resetCounter(int specificCount) async {
+    await updateCount(specificCount);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Counter app'),
+          backgroundColor: Color(0xFF303030),
+       ),
+        
+      body:  Center(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                               
+                  Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                iconSize: 20,
+                icon: Icon(Icons.refresh),
+                onPressed: _resetCounter,
+              ),
+                    ],
+                  ),
+              // SizedBox(height: 50),
+                  Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        'Count',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        '$counter',
+                        style: TextStyle(fontSize: 60),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                                               
+                ],
+              ),
+              SizedBox(height: 150),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                radius: 180,
+                backgroundColor: Colors.green[400],
+                child: IconButton(
+                  iconSize: 180,
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                onPressed: _incrementCounter,
+              ),
+                  ),
+                ],
+              ),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor:Colors.green[400],
+                  child: IconButton(
+                      iconSize: 30,
+                      icon: Icon(
+                        Icons.remove,
+                        color: Colors.white,
+                      ),
+                    onPressed: _decrementCounter,
+                  ),
+                  ),
+                ],
+              ),
+          
+            ],
+          ),
+           
+          
+        ),
+      );
+    
+  }
+}

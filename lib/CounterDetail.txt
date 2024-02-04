@@ -1,0 +1,35 @@
+import 'package:iSikhi/Counter.txt';
+import 'package:iSikhi/main.dart';
+import 'package:flutter/material.dart';
+
+class CounterDetailPage extends StatelessWidget {
+  final Counter counter;
+
+  CounterDetailPage({required this.counter});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Counter Details'),
+        backgroundColor: Color(0xFF303030),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Counter Name: ${counter.name}',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Count: ${counter.count}',
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

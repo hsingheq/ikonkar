@@ -1,0 +1,32 @@
+{
+  "name": "keep_screen_on",
+  "version": "3.0.0",
+  "summary": "Keep screen on.",
+  "description": "This plugin disables automatic screen off and prevents the screen from turning off.",
+  "homepage": "https://github.com/craftsoft-dev/flutter_keep_screen_on",
+  "license": {
+    "type": "MIT",
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Craftsoft LLC": "inquiry@craftsoft.jp"
+  },
+  "source": {
+    "path": "."
+  },
+  "documentation_url": "https://pub.dev/packages/keep_screen_on",
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "Flutter": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}

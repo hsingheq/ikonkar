@@ -1,0 +1,140 @@
+
+import 'package:iSikhi/Counter.txt';
+import 'package:iSikhi/CounterDetail.dart';
+import 'package:iSikhi/ListView.dart';
+import 'package:iSikhi/main.dart';
+import 'package:flutter/material.dart';
+
+class CounterListPage extends StatefulWidget {
+  @override
+  _CounterListPageState createState() => _CounterListPageState();
+}
+
+class _CounterListPageState extends State<CounterListPage> {
+  List<Counter> counters = [
+    Counter(count: 1, name: 'Counter 1'),
+    Counter(count: 2, name: 'Counter 2'),
+    Counter(count: 3, name: 'Counter 3'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text('Counter List'),
+          backgroundColor: Color(0xFF303030),
+          actions: [ IconButton(
+            
+      iconSize: 20,
+      icon: Icon(Icons.add),
+      onPressed: () {
+        // Handle the onPressed action
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CounterPage(),
+          ),
+        );
+      },
+    ),
+    
+          ],
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              // Open the custom shape menu when the menu icon is tapped
+              showModalBottomSheet(
+                context: context,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+                ),
+                builder: (BuildContext context) {
+                  return Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Menu',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+                              ListTile(
+                                title: Text('Counter'),
+                                onTap: () {
+                                  // Handle item 1 tap
+                                  print('Item 1 tapped');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CounterListPage (),
+                                  ),
+                                );
+                                },
+                              ),
+                              ListTile(
+                                title: Text('Read Gurbaani  '),
+                                onTap: () {
+                                  // Handle item 2 tap
+                                  print('Item 2 tapped');
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MyListViewPage(),
+                                  ),
+                                ); // Close the menu
+                                },
+                              ),
+                        // Add more ListTiles for additional menu items
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+       ),
+      body: ListView.builder(
+        itemCount: counters.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('Counter ${counters[index].name}'),
+            subtitle: Text('Count: ${counters[index].count}'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    // Handle edit action
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    // Handle delete action
+                    setState(() {
+                      counters.removeAt(index);
+                    });
+                  },
+                ),
+              ],
+            ),
+            onTap: () {
+              // Handle row click to show details
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CounterPage(),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
